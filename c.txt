@@ -1,0 +1,818 @@
+RESUMO EM C
+
+VARIÁVEIS
+1- void (nada) - 0 bytes (0)
+2- char (caractere) - 1 byte (-128 a 127)
+3- int (número) - 4 bytes (-2,1B a 2,1B) 
+4- float (número ,00...) - 4 bytes (7 dígitos)
+5- double (números maiores) - 8 bytes (15 dígitos)
+
+
+TYPEDEF
+1- Typedef pode alterar o nome do tipo de dado durante o programa
+
+typedef int inteiro; 
+
+2- A partir dessa linha pode - se declarar variáveis da forma
+
+inteiro i;
+
+3- O programa reconhece i como int graças a declaração de typedef
+
+
+COMANDO DE FORMATO
+1- %c - caractere
+2- %d e %i -  inteiros decimais
+3- %E e %e - notação científica com E maiúsculo ou minúsculo
+4- %g - usa %e ou %f dependendo de qual for menor
+5- %n - ponteiro para inteiro em que o número de caracteres anteriores é colocado
+6- %o - octal sem sinal
+7- %s - string de caracteres
+8- %u - inteiros decimais sem sinal
+9- %x - hexadecimais sem sinais
+10- %p -  ponteiro
+11- %0.0X - o número antes do ponto mostra o tamanho mínimo e depois do ponto é o tamanho máximo
+12- %-x - o dado é impresso do lado esquerdo da saída, ao invés do lado direito
+13- %lx - l (L) mostra que o dado é do tipo long 
+
+
+MODIFICADORES (usados antes das variáveis)
+1- short (int) - reduz em 2 bytes 
+2- long (int) - aumenta 4 bytes 
+3- signed (todos) - permite valores positivos e negativos
+4- unsigned (todos) - apenas valores positivose dobra a faixa limite
+5- static (todos) - ...
+
+
+ARRAYS(vetores e matrizes)
+1- Uma coleção de elementos do mesmo tipo localizados "lado a lado"
+2- [] é chamado de vetor para números e string para letras
+
+int x[número de elementos dentro];
+float y[MAX]; (MAX é definido no começo com #define MAX 10)
+char z[tamanho da quantidade de letras]; 
+
+3- A contagem de membros começa no 0
+
+int x[5];
+x[0] = 2;
+printf("%i", x[0]);
+
+4- Os valor dos integrantes pode ser declarado junto ou ser atribuido depois
+
+int x[3] = {1, 2, 3};
+
+5- Os vetores terminam em \0, por isso começam no 0 e parecem ter um espaço a mais
+
+char nome[] = "juan"; (string com j,u,a,n,\0)
+
+6- Arrays não mudam de tamanho 
+7- Para tamanhos dinãmicos se usa um ponteiro de alocação dinâmica
+
+
+PRÉ PROCESSADORES 
+1- #define - cria um identificador e uma string para substituir sua menção
+#define TEXTO arroz-doce
+#define TITULO Bem vindo!\n
+#define AZUL "\x1b[34m"
+
+2- #error - força o compilador a parar a compilação
+#error erro fatal
+escreve na tela a mensagem em seguida
+
+3- #include - faz o compilador ler outro arquivo fonte ou arquivo criado
+#include <stdlib.h>
+#include "stdlib.h"
+só um por linha e entre "" ou <>
+
+4- #if e #endif - cria uma compilação condicional que só ocorre se a condição do #endif for verdadeira
+#if 99 > i
+printf("É maior!")
+#endif
+endif marca o final da condição
+
+5- #else - cria uma segunda alternativa caso o if seja falso
+#if 99 > i 
+printf("É maior!")
+#else
+printf("É menor!")
+#endif
+
+6- #elif - "else if" cria uma sequencia de condições if
+#if 99 = i
+printf("É igual!")
+#elif 99 > i 
+printf("É maior!")
+#elif 99 < i
+printf("É menor!")
+#endif
+
+7- #ifdef - mesmo funcionamento do #if, mas com condições de macro existentes
+#ifdef _WIN32 
+#include <conio.h>
+#endif
+código só é compilado no windows
+
+8- #ifndef - acontece apenas se a condição não for existente
+#ifndef _WIN32
+#include <pthreads.h>
+#endif
+código só é compilado se não for no windows
+
+9- #undef - remove a definição que #define deu
+#define NOME afonso
+printf(NOME)
+#undef NOME
+
+
+PONTEIROS (*)
+1- Uma variável que armazena um endereço de memória
+2- Serve para mexer em array, string, alocação dinâmica, passagem, etc
+3- Colocar um "*" antes de uma variável faz com que ela armazene o conteúdo de um endereço (&), declarando que ela será um ponteiro
+4- Para acessar o endereço, coloca-se & antes da variável que se quer acessar
+
+int x = 5;
+int *p = &x;
+printf("%i", *p) (acessa o endereço de x através de p)
+
+5- É possíel passar valores ao x através de *p 
+
+int x;
+int *p = &x;
+*p = 10;
+(x agora é igual a 10)
+
+6- Para passar de ponteiro para ponteiro, cria-se um ponteiro para outro ponteiro
+
+int x = 18;
+int *p = &x;
+int **pp = &p;
+
+7- Ponteiro pode ser void, mas precisa ser convertido antes de desreferenciar
+
+int a = 10;
+float b = 3.14f;
+void *v;
+v = &a;
+printf("%i", *(int*)v)
+(mesmo proceso para b)
+
+8- Incrementar ou Decrementar um ponteiro avança ou recua pacotes de tamanho (arrays)
+
+int arr[3] = {1, 2, 3}
+int *p = arr;
+printf("%i", *p); (1)
+p++;
+printf("%i", *p); (2)
+
+STRUCTS
+1- Um grupo de diferentes tipos de variáveis sob o mesmo nome
+
+(typedef) struct NOME 
+{
+  int x;
+  float y;
+  char z;
+}
+NOME nomeGlobal; (typedef)
+
+2- O typedef te da a opção de criar um "apelido" para facilitar o chamado depois
+3- Para referenciar depois com o typedef, usa-se nomeGlobal. o que está dentro (nomeGlobal.x)
+
+
+UNIONS
+1- Um grupo de estruturas que compartilham o mesmo endereço de memória entre eles
+2- Pode ter diferentes tipos de dados, mas apenas um por vez
+3- Se alterar algum membro, altera todos
+
+union NOME
+{
+  int x;
+  float y;
+  char z;
+}
+
+4- Usado quando souber que será usado apenas um campo por vez
+
+
+ENUMS 
+1- Cria uma constante inteira com nome
+
+enum Dia {DOMINGO, SEGUNDA, TERÇA, QUARTA, QUINTA, SEXTA, SABADO};
+enum Dia hoje = TERÇA;
+(hoje = 2)
+
+2- A contagem de membros também começa em 0
+3- O valor pode ser alterado ou declarado na base
+
+enum Cor {VERMELHO, AZUL = 4, ROXO};
+enum Tinta = AZUL;
+(Tinta = 4)
+(ROXO = 5)
+
+4- Os valores dos integrantes são sempre sequenciais, se um valor no meio for declarado, o próximo continuará a sequencia
+
+
+PONTEIROS DE FUNÇÃO
+1- Armazena endereço de uma função em um ponteiro 
+2- Facil de chamar as funções diretamente com o ponteiro
+
+int soma(int a, int b) { return a + b }
+int (*s)(int, int);
+s = soma;
+
+3- Base de menus interativos e programação modular
+
+int resultado;
+resultado = s(x, y);
+
+4- Permite trocar de funções em tempo de execução
+
+
+BIBLIOTECAS
+1- Colocadas no começo do código para adicionar as funcionalidades ja prontas dentro delas
+2- # include <biblioteca.h>
+
+
+<stdio.h> (comunicação com usuário e arquivos)
+1- Streams - FILE, stdin, stdout, stderr
+2- Leitura e Gravação Formatada - printf(), scanf(), fprintf(), fscanf()
+3- Leitura e Gravação não Formatada - fgetc(), fgets(), fputc(), fputs(), fread(), fwrite()
+4- Controle de fluxo de arquivos - fopen(), fclose(), fflush(), fseek(), ftell(), rewind()
+5- Erros de I/O - perror(), cleanerr(), feof(), ferror()
+
+
+<stdlib.h> (alocação de memória, conversões e controle de processos)
+1- Alocação Dinâmica - malloc(), calloc(), realoc(), free()
+2- Conversões Numéricas - atoi(), atof(), strtol(), strtod()
+3- Ordem e Busca - qsort(), bsearch()
+4- Controle e Execução - exit(), atexit(), system(), abort()
+5- Gerenciamento de Ambiente - getenev(), setenev() (POSIX)
+
+
+<string.h> (manipulação de cadeias de caracteres e blocos de memoria)
+1- strlen(), strcpy(), strncpy(), strcat(), strcmp(), strstr(), strchr()
+2- Memória Bruta - memcpy(), memmove(), memset(), memcmp()
+3- Tokenização - strtok()
+
+
+<math.h> (funções matemáticas)
+1- Trigonometria - sin(), cos(), tan(), asin(), atan2()
+2- Exponenciação e log - exp(), log(), log10(), pow()
+3- Arredondamento - ceil(), floor(), fabs(), fmod()
+4- Constantes - M_PI, HUGE_VAL
+
+
+<ctype.h> (teste e conversão de caracteres)
+1- Classificação - isalpha(), isdigit(), isalnum(), isspace(), ispunct()
+2- Conversão - toupper(), tolower()
+
+
+<time.h> (manipulação de tempo e data)
+1- Tempo em Segundos - time(), difftime()
+2- Conversão para Componente- localtime(), gmtime(), mktime()
+3- Formatação - strftime()
+4- Contagem de CPU - clock()
+
+
+<assert.h> (pré processador)
+1- Interrompe Execução se expr for Falso - Macro assert(expr)
+
+
+<stddef.h> (macro)
+1- Adiciona - size_t, ptrdif_t, NULL, offsetof()
+
+
+<stdarg.h> (funções com números variáveis de argumentos)
+1- Adiciona - va_list, va_start, va_arg
+
+
+<limits.h> (constantes de limites inteiras)
+1- Adiciona - INT_MAX, CHAR_BIT
+
+
+<float.h> (constantes de limites ponto-flutuante)
+1- Adiciona - FLT_MAX, DBL_EPSILON
+
+
+<locale.h> (suporte à localizações)
+1- Para Idioma - setlocale()
+2- Para Moeda - localeconv()
+
+
+<errno.h> (macros de erro)
+1- Adiciona - ERRNO, EDOM, ERANGE
+
+
+<setjmp.h> (salva/restaura contexto de execução)
+1- Salto não Linear - setjmp(), longjmp()
+
+
+<stdint.h> e <inttypes.h> (tipos de int com largura definida)
+1- Tipos exatos - int8_t, uint32_t, int64_t
+2- Tipos de Largura Mínima - int_fast16_t
+3- Macro de Formato - PRId32, SCNu64
+
+
+<stdbool.h> (macros bool)
+1- Adiciona - _bool, bool, true, false
+
+
+<wchar.h> e <wctype.h> (suporte a caracteres strings unicode) 
+1- adiciona - wchar_t, wscpy(), wcslen(), fputwc(), fgetwc(), iswalpha(), towlower()
+
+
+<stdalign.h> (alinhamento)
+1- Macros - alignas, algnof
+
+
+<statomic.h> (operações atomicas)
+1- Declara variável atomica - atomic_int, atomic_char, atomic_bool, atomic_long, atomic_flag
+2- Operações - atomic_fetch_add(), atomic_fetch_sub(), atomic_store(), atomic_load()
+3- Comparações e Trocas - atomic_compare_exchange_strong(), atomic_compare_exchange_weak()
+4- Flags de Spinlock - atomic_flag_test_and_set(), atomic_flag_clear()
+5- Ordem de Memória - memory_order_relaxed, memory_order_acquire, memory_order_release, memory_order_seq_cst
+
+
+<threads.h> (API de Threads C11) 
+1- Criação de Threads - thrd_creat()
+2- Sincronização Básica - thrd_join(), thrd_detach()
+3- Mutexes - mtx_init(), mtx_lock(), mtx_unlock(), mtx_destroy()
+4- Variáveis Condicionais - cnd_init(), cnd_wait(), cnd_signal(), cnd_broadcast(), cnd_destroy()
+5- Inicialização Única - once_flag + call_once
+6- Pausas e Timeouts - thrd_sleep(), cnd_timedwait()
+
+
+CONTROLE DE FLUXO
+1- IF - Executa a próxima operação entre chaves {} se a condição entre parenteses () for verdadeira
+
+if (x=4)
+{
+  printf("X igual a Quatro");
+}
+
+2- ELSE - Se a condição do if for falsa, executa a próxima ação (não é obrigatório)
+
+else
+{
+  printf("X diferente de Quatro");
+}
+
+3- SWITCH - Intercala entre opções de valor inteiro chamadas CASE de acordo com um parâmetro recebido
+
+int opc;
+opc = getch;
+switch (opc)
+{ 
+
+}
+
+4- CASE - Opção de valor inteiro dentro de um SWITCH 
+
+switch (opc)
+{
+  case '1':
+  função();
+  break;
+
+  case '2': 
+  função2();
+  break;
+}
+
+5- DEFAULT - Ação desencadeada se nenhum dos CASES ocorrerem (não obrigatório)
+
+switch (opc)
+{
+  case '1':
+  função();
+  break;
+
+  case '2': 
+  função2();
+  break;
+
+  default:
+  printf("Opção Inválida");
+}
+
+6- FOR - Recebe um valor inicial, uma condição e uma operação ao valor inicial e a cada contagem, realiza uma ação
+
+int i;
+for (i = 0; i < 5; i++)
+{ 
+  printf("\nContagem");
+}
+
+7- WHILE - Recebe uma condição e realiza uma ação enquanto condição verdadeira
+
+int opc;
+opc = getch;
+while (opc < 10)
+{
+  printf("Arroz Doce");
+}
+
+8- DO ... WHILE - Realiza ação primeiro e só interrompe quando a condição WHILE for cumprida
+
+int opc;
+do 
+{
+  printf("Deseja mais alguma coisa? [n para não]")
+  opc = getch();
+)
+while (opc != n)
+
+9- BREAK - Dentro de loops (for, while, switch) interrompe o laço
+
+switch (opc)
+{
+  case '1':
+  função();
+  break;
+
+  case '2': 
+  função2();
+  break;
+
+  default:
+  printf("Opção Inválida");
+}
+
+10 - CONTINUE - Dentro de FOR e WHILE encerra a interação atual e passa para a próxima 
+
+int i;
+for (i = 0; i < 5; i++)
+{ 
+  if (i = 4)
+    { 
+      continue;
+    }
+  printf("\nContagem");
+} 
+
+11- GOTO - Desvio incondicional para um ponto marcado 
+
+switch (opc)
+
+MENU:
+{
+  case '1':
+  função();
+  break;
+
+  case '2': 
+  função2();
+  break;
+
+  default:
+  goto MENU;
+}
+
+
+SÍMBOLOS E OPERADORES
+1- & - Endereço de memória (&x)
+2- * - Ponteiro acessa o valor (*p)
+3- . - Acesso ao membro de uma struct (struct.primeiroMembro)
+4- -> - Acesso ao membro da struct via ponteiro (p -> primeiroMembro)
+5- [] - Acessa e grava membros de array (array[2])
+6- () - Chamadas e agrupamento (função (), ((a +b) * c))
+7- sizeof - "tamanho de" (sizeof(x), sizeof(arquivo))
+8- = - atribui valor (x = 5)
+9- == e != - Compara valores (x == y, x != y)
+10- <, >, <= e >= - Compara valores (x > y, x <= y)
+11- +, -, *, / e % - Operadores aritméticos (x - y)
+12- -- e ++ - Incrementa e decrementa (x++)
+13- # e ## - Pré processadores (#include)
+14 || - E (adiciona mais uma condição para dar verdadeiro)
+15- (conversão) - Converte uma variável de um tipo para outro ((int) x)
+16- \ - Escapes de strings ("\nHello World")
+
+
+ESCAPES DE STRINGS
+1- \a - Emite sinal sonoro no terminal 
+2- \b - Move o cursor uma posição para trás
+3- \f - Avança para a próxima página 
+4- \n - Nova linha
+5- \r - Move o cursor para o início da linha
+6- \t - Tab horizontal
+7- \v - Tab vertical
+8- \\ - insere o caractere \
+9- \' - insere o caractere '
+10- \" - insere o caractere "
+11- \ooo - Valor do caractere octal de 1 a 3 dígitos
+12- \xhh - Valor do caractere hexadecimal 
+13- \0 - Aparece implicitamente no final de string ou pode ser colocado manualmente 
+
+
+FUNÇÕES DE STRINGS (string.h)
+1- strcpy(s1, s2) - Copia a string 2 para a string 1
+2- strcat(s1, s2) - Junta a string 2 no final da string 1
+3- strlen(s1) - Retorna o tamanho de s1
+4- strcmp(s1, s2) - Retorna 0 se s1 e s2 são iguais, menor que 0 se s1 < s2 ou maior que 0 se s1 > s2
+5- strchr(s1, ch) - Retorna um ponteiro para a primeira ocorrencia de ch em s1
+6- strstr(s1, s2) - Retorna um ponteiro para a primeira ocorrencia de s2 em s1
+
+
+FUNÇÕES 
+1- Divide o programa em blocos 
+2- Podem ser declaradas no início do programa ou ao longo do código
+3- Se não forem declaradas no início, devem aparecer no programa antes de serem chamadas 
+4- As funções podem receber e/ou devolver um ou mais parâmetros - retorno função(o que recebe)
+
+void função(void) (não recebe nem retorna nada)
+int função(void) (devolve um valor inteiro)
+void função(char opc) (recebe um char chamado opc)
+float função(int opc, float valor, char nome) (recebe 3 parametros diferentes e retorna 1)
+
+5- Uma função int main() é obrigatória para o programa funcionar, com return 0 para normalidade e return 1 para erros
+6- Variáveis que forem declaradas fora de uma função são chamadas de globais
+7- Variáveis declaradas dentro de uma função são internas e só podem sair se forem retornadas
+8- Funções podem ter um "static" antes do parâmetro de retorno para que se tornem exclusivas de um arquivo só, sem poder ser lidos por outros arquivos
+9- As funções podem ser chamadas e atribuidos os valores que serão enviados a ela em qualquer momento do código, incluindo em outras funções
+10- Para passar os valores para uma função basta escrever função(parâmetros)
+11- Funções podem receber ponteiros, que armazenam o endereço da função e facilita seu chamado
+
+int r;
+int soma(int a, int b) {return a + b;}
+int (*fp)(int, int);
+fp = soma;
+r = fp(2, 5);
+
+
+MANIPULAÇÃO DE  VOS 
+1- O programa pode criar, manipular, excluir e editar arquivos 
+2- Os arquivos podem ser de diferentes formatos, sendo eles binário, texto, csv, extensão, configuração e temporário
+3- Além de arquivos, o programa também pode mexer em imagens, vídeos e áudios
+4- Para mexer com o arquivo, preisa abrir/criar, realizar a ação e fechar depois
+5- Para abrir um arquivo usa-se o termo "fopen"
+
+FILE *fp = fopen("arq.dat", "rb");
+
+6- Para fechar um arquivo usa-se o termo "fclose(nome do arquivo)"
+7- Para gravar informações no arquivo usa-se o termo "fprintf()" para texto e "fwrite()" para binário
+
+FILE *fp = fopen("arq.txt", "a");
+fprintf(fp, "%s", nome); (texto)
+fwrite(&x, sizeof(x), 1, fp); (binário se arq.dat)
+fclose(fp)
+
+8- Para ler o texto do arquivo usa-se o termo "fread" para binários e "fscanf" para texto
+
+FIle *fp = fopen("arq.dat", "rb");
+fread(&x, sizeof(x), 1, fp); (binário)
+fscanf(fp, "%i", &valor); (texto se arq.txt)
+fclose(fp);
+
+9- Para mover o ponteiro de gravação de dentro do arquivo para outro ponto, usa-se "fseek()"
+
+fseek(fp, deslocamento em bytes, origem)
+(SEEK_SET - Início do arquivo)
+(SEEK_CUR - Posição atual)
+(SEEK_END - Fim do arquivo)
+fseek(fp, 0, SEEK-SET) (vai para o início do arquivo)
+fseek(fp, -10, SEEK_CUR) (retorna 10 bytes da localização atual)
+
+10- Para achar a posição do ponteiro usa-se "long pos = ftell(fp)"
+11- Para saber se já chegou ao fim do arquivo usa-se "feof(nome do arquivo)"
+12- Para exibir erro de entrada ou saída (I/O), usa-se "perror(mensagem)"
+
+
+ALOCAÇÃO DINÂMICA
+1- Permite a criação de estruturas de dados de tamanho variável 
+2- Para alocações dinâmicas é principalmente usado os ponteiros 
+3- Os parâmetros de quantidades de bytes são feitos em size_t e new_size
+4- Para criar um bloco de memória, primeiro definimos o tamanho em size com "*ptr = malloc();
+5- Esse processo não inicializa o uso da memória
+6- Para saber o tamanho da memória a ser usada usa-se sizeof(parametro) para saber quantos bytes esse parametro utiliza na memória
+7- Depois para definir o tamanho,multiplica a quantidade de bytes pela quantidade de espaços desejada (x)
+
+int *vetor = malloc(x * sizeof *ptr);
+ 
+
+8- Testar a existencia da memória e do vetor com "if (vetor == NULL) {erro}
+9- Depois de separar o espaço e verificar sua possibilidade, podemos zerar os espaços e inicializá-los
+10- A função "calloc" faz esse papel recebendo os parâmetros (size_t número de elementos, size_t sizeof)
+
+int *vetor  (int *) calloc(x, sizeof(int));
+double (*matriz)[3] = calloc(3, sizeof *matriz);
+
+11- Depois de separado o espaço e criado ele, podemos depois ampliar, reduzir ou mover o espaço
+12- Essa ação é feita com "realloc", que recebe o ponteiro anterior e o novo tamanho (new_size)
+
+int *v = malloc(5 * sizeof *v);
+int *temp = realloc(v, 10 * sizeof *v);
+
+13- Nunca faça direto a realocação para a mesma variável sem verificar primeiro se tem retorno usando outra variável
+14- Se diminuir o tamanho, os dados localizados fora do novo tamanho serão descartados 
+15- A função "free" libera um bloco de memória e devolve ao sistema 
+16- Para zerar o ponteiro após liberá-lo usá-se "NULL"
+
+free(vetor);
+vetor = NULL;
+
+17- Exemplo de criação:
+
+size_t i;
+int *ptr = NULL;
+ptr = malloc(número * sizeof(tipo de dado);
+if (!ptr) {error()}
+for ( i = 0; i < número; i++)
+{ 
+  ptr[i] = algumaCoisa;
+}
+int *tmp = realloc(ptr, novoNúmero * sizeof(tipo de dado);
+if (!tmp) { free(ptr); error(); }
+ptr = tmp;
+free(ptr);
+ptr = NULL;
+
+18- Os dados que podem ser alocados podem ser básicos, structs, arrays, funções e ponteiros de ponteiro
+19- Básico - double *d = malloc(número * sizeof *d);
+20- Struct - item *it = calloc(número * sizeof *it);
+21- Array - int(*mat)[quantidade de colunas] = malloc(quantidade de linhas * sizeof *mat);
+22- Função Genérica - void *nome = malloc(256);
+23- Ponteiro de Ponteiro - char **texto = malloc(linhas * sizeof *texto);
+24- Sempre verifique o retorno de malloc() com NULL antes de usá-lo de novo
+
+
+MATRIZ DINÂMICA
+1- Mesmo processo da alocação dinâmica, mas agora com construção de linhas e colunas
+2- São feitas com ponteiros de ponteiros (**ptr) formando um array de ponteiros 
+3- Na alocação de memória de cada matriz deve ser feita para as linhas e para as colunas
+4- Também na alocação, o tipo de dado dentro do sizeof dever ter um '*' depois "sizeof(tipo de dado *)", significando que o espaço também será de ponteiros
+5- Só faz esse processo pra uma das declarações, seja pras linhas ou para as colunas, na alocação da outra já não precisa
+6- Matriz[i][j] é como geralmente fica escrito
+7- Podem ser valores atribuidos automaticamente ou coletados em tempo de execução
+8- Estrutura básica:
+int linhas = 5, colunas = 5, i, j;
+int **matriz;
+matriz = malloc(linhas * sizeof(int *);
+(verificação de erro)
+for (i = 0; i < linhas; i++)
+{
+   matriz[i] = malloc(colunas * sizeof(int));
+   (verificação de erro)
+}
+for (i = 0; i < linhas; i++)
+{
+   for (j = 0; j < colunas; j++) 
+   {
+      printf("Digite matriz1[%d][%d]: ", i + 1, j + 1);
+      scanf("%d", &matriz1[i][j]);
+   }
+}
+for (int i = 0; i < linhas; i++) 
+   {
+      free(matriz1[i]);
+      free(matriz2[i]);
+      free(soma[i]);
+   }
+
+free(matriz1);
+free(matriz2);
+free(soma);
+
+9- Para realizar operações o processo é bem parecido com o acesso para a declaração
+
+
+DADOS DE MATRIZES PARA IA E ML
+1- Cada coluna deve apresentar uma característica de uma amostra
+2- Cada linha deve apresentar um dado de cada amostra
+3- Uma matriz para receber dados e uma para 
+
+
+REGRESSÃO LINEAR (Machine Learning)
+1- A estrutura do código começa com a inclusão de bibliotecas essenciais para a escrita: stdlib.h para malloc e free, stdio.h para printf e scanf, time.h para srand, e math.h para funções como pow
+2- As variáveis para os dados (X, y) e para os parâmetros do modelo (a, b) são declaradas como float ou double para maior precisão, usando ponteiros (*) para dados 1D ou ponteiros de ponteiros (**) para matrizes
+3- A alocação de memória é feita dinamicamente usando a sintaxe (float*)malloc(quantidade * sizeof(float)) para vetores 1D e a alocação de duas etapas para matrizes 2D
+4- É crucial incluir uma verificação de erro (if (ponteiro == NULL)) após cada alocação para garantir que a memória foi reservada corretamente
+5- O modelo começa sem conhecimento, então os parâmetros a e b são inicializados com valores aleatórios pequenos
+6- A inicialização da semente do gerador de números aleatórios deve ser feita uma única vez com srand((unsigned)time(NULL))
+7- O learningRate e o número de epocas são definidos como variáveis
+8- O treinamento é feito em um loop principal, geralmente um for, que repete o processo por um número de epocas
+9- Dentro do loop de épocas, as variáveis que acumulam os gradientes e erros são zeradas no início de cada iteração
+10- Um segundo loop, também um for, itera por cada dado de treinamento (for (i = 0; i < quantidade_de_dados; i++))
+11- A propagação direta (Forward Pass) é calculada com a sintaxe float previsao = a * X[i] + b;
+12- O erro é calculado com a sintaxe float erro = previsao - y[i];
+13- O gradiente de cada parâmetro é acumulado usando fórmulas baseadas no erro, como gradienteA += erro * X[i]
+14- A normalização dos gradientes é feita fora do loop de dados, dividindo a soma pelo número de dados, como gradienteA = (2.0 / quantidade_de_dados) * gradienteA;
+15- A atualização dos parâmetros é feita subtraindo o gradiente normalizado multiplicado pela taxa de aprendizado, como a = a - learningRate * gradienteA;
+16- O processo de validação do aprendizado é feito monitorando o erro, que deve diminuir em cada época
+17- Para fazer uma previsão em um novo dado após o treinamento, basta aplicar a fórmula do modelo (previsao = a * X_novo + b;) usando os valores finais de a e b
+18- Para a serialização do modelo, a escrita em arquivo deve ser feita com a função fprintf para salvar os valores de a e b
+19- Para evitar vazamentos de memória, a liberação deve ser feita ao final do programa
+20- A sintaxe para liberação de um vetor 1D é free(ponteiro)
+21- A sintaxe para liberação de uma matriz 2D é um loop que libera cada linha e depois a liberação da matriz de ponteiros, como for (i = 0; i < linhas; i++) { free(matriz[i]); } free(matriz);
+22- Exemplo do Gemini:
+
+// =============================================================================
+// EXEMPLO COMPLETO DE REGRESSÃO LINEAR EM C
+// =============================================================================
+// Este programa treina um modelo de Machine Learning para encontrar a relação
+// linear entre horas de estudo e a nota obtida.
+// =============================================================================
+
+// --- 1. ESTRUTURA MÍNIMA: OS CABEÇALHOS ---
+// Bibliotecas essenciais para o funcionamento do programa.
+#include <stdio.h>    // Para imprimir na tela (printf)
+#include <stdlib.h>   // Para alocação de memória (malloc) e números aleatórios (rand, srand)
+#include <time.h>     // Para usar o tempo como semente do gerador aleatório (srand)
+#include <math.h>     // Para funções matemáticas como pow() (não usada aqui para simplificar)
+
+int main() 
+{
+    // --- 2. OS "BOTÕES DE AJUSTE": HIPERPARÂMETROS ---
+    // Valores que nós definimos para controlar como o modelo aprende.
+    float learning_rate = 0.01; // Taxa de aprendizado: o tamanho do "passo" a cada correção.
+    int epocas = 50000;         // Épocas: quantas vezes o modelo verá todos os dados.
+
+    // --- 3. OS "PROFESSORES": DADOS DE TREINAMENTO ---
+    // Este é o conhecimento que vamos passar para a máquina.
+    // Em um programa real, esses dados poderiam vir de um arquivo ou do usuário.
+    float X[] = {2.0, 4.0, 5.0, 7.0, 9.0, 10.0}; // Característica (Entrada): Horas de estudo
+    float y[] = {3.0, 5.0, 7.0, 9.0, 10.0, 11.5}; // Rótulo (Saída): Nota obtida
+    int qtd_dados = 6;                          // Quantidade de amostras de dados.
+
+    printf("Iniciando o treinamento do modelo de Regressao Linear...\n");
+    printf("------------------------------------------------------\n");
+    printf("Taxa de Aprendizado: %f\n", learning_rate);
+    printf("Numero de Epocas: %d\n", epocas);
+    printf("------------------------------------------------------\n");
+
+    // --- 4. O "CÉREBRO" DO MODELO: PARÂMETROS ---
+    // Estes são os valores que o modelo tentará aprender.
+    // Inicializamos com valores aleatórios para que o modelo comece sem "preconceitos".
+    srand(time(NULL));
+    float a = (float)rand() / RAND_MAX; // Parâmetro 'a' (peso), representa a inclinação da reta.
+    float b = (float)rand() / RAND_MAX; // Parâmetro 'b' (viés/bias), representa onde a reta corta o eixo y.
+
+    // --- 5. O "PROCESSO DE ESTUDO": O LOOP DE TREINAMENTO ---
+    // Esta é a estrutura central onde o aprendizado ocorre.
+    for (int epoca = 0; epoca < epocas; epoca++) {
+        // Variáveis para acumular os gradientes em cada época.
+        // Elas são zeradas no início de cada "revisão" dos dados.
+        float gradiente_a = 0.0;
+        float gradiente_b = 0.0;
+
+        // --- 5.1 LOOP INTERNO: PASSANDO POR CADA EXEMPLO ---
+        // O modelo analisa cada exemplo de treinamento, um por um.
+        for (int i = 0; i < qtd_dados; i++) {
+            // --- PASSO 1: PREVISÃO (FORWARD PASS) ---
+            // O modelo faz uma "aposta" de qual seria a nota.
+            float previsao = a * X[i] + b;
+
+            // --- PASSO 2: CÁLCULO DO ERRO ---
+            // O modelo calcula o quão longe sua aposta estava da realidade.
+            float erro = previsao - y[i];
+
+            // --- PASSO 3: CÁLCULO DOS GRADIENTES ---
+            // O modelo calcula a "culpa" de cada parâmetro no erro.
+            // Este é o coração do backpropagation para este modelo.
+            gradiente_a += erro * X[i];
+            gradiente_b += erro;
+        }
+
+        // --- 6. A "CORREÇÃO": ATUALIZAÇÃO DOS PARÂMETROS (OTIMIZADOR) ---
+        // Com base no erro total da época, os parâmetros são ajustados.
+
+        // Primeiro, normalizamos os gradientes (calculamos a média).
+        gradiente_a = (2.0 / qtd_dados) * gradiente_a;
+        gradiente_b = (2.0 / qtd_dados) * gradiente_b;
+
+        // Em seguida, atualizamos os parâmetros, dando um pequeno passo
+        // na direção que diminui o erro. Este é o Gradiente Descendente.
+        a = a - learning_rate * gradiente_a;
+        b = b - learning_rate * gradiente_b;
+
+        // (Opcional) Imprimir o progresso do erro a cada N épocas.
+        if ((epoca + 1) % 10000 == 0) {
+            float erro_total = 0;
+            for(int i = 0; i < qtd_dados; i++){
+                erro_total += (a * X[i] + b - y[i]) * (a * X[i] + b - y[i]);
+            }
+            printf("Epoca %d/%d, Erro (MSE): %f\n", epoca + 1, epocas, erro_total / qtd_dados);
+        }
+    }
+
+    // --- RESULTADO FINAL ---
+    printf("------------------------------------------------------\n");
+    printf("Treinamento concluido!\n");
+    printf("Modelo final (reta aprendida): y = %f * x + %f\n", a, b);
+    printf("------------------------------------------------------\n");
+
+    // --- INFERÊNCIA: USANDO O MODELO TREINADO ---
+    // Agora que o modelo "aprendeu", podemos usá-lo para prever
+    // a nota para um valor de horas de estudo que ele nunca viu.
+    float horas_novas = 8.0;
+    float nota_prevista = a * horas_novas + b;
+
+    printf("Usando o modelo para uma nova previsao:\n");
+    printf("Para %.1f horas de estudo, a nota prevista e: %.2f\n", horas_novas, nota_prevista);
+
+    return 0; // Fim do programa.
+}
+
+
+
+
